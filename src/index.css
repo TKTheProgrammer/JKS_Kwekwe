@@ -1,0 +1,40 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #110a0a;
+  color: #f5f0e8;
+  font-family: 'Crimson Pro', Georgia, serif;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(201, 168, 76, 0.012) 2px,
+    rgba(201, 168, 76, 0.012) 4px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
