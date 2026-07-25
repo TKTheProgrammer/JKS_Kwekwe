@@ -8,7 +8,7 @@ import starPupils  from './assets/Star_Pupils/WhatsApp Image 2026-07-23 at 09.28
 import event1      from './assets/Events/event1.jpg'
 import event2      from './assets/Events/event2.jpeg'
 import kata3       from './assets/Kata_tutorials/kata3.mp4'
-import watermarkLogo from './assets/iskf-logo.png'
+import watermarkLogo from './assets/iskf.png'
 
 // Pull in every image inside src/assets/Gallery automatically — no need to
 // import each file by name, and no need to touch this code when photos are
