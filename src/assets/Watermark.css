@@ -1,0 +1,27 @@
+/* ── SITE WATERMARK ────────────────────────────────────────────────────────
+   Fixed, low-opacity emblem sitting behind all page content. Sections with
+   their own solid/opaque background color will cover it — that's expected;
+   it shows through in sections with transparent or semi-transparent
+   backgrounds (e.g. body background, footer). If you want it visible behind
+   every section, make sure section backgrounds use rgba() with some
+   transparency rather than a fully opaque color, OR raise the watermark's
+   z-index above specific sections that should show it. */
+
+.site-watermark {
+  position: fixed;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: min(55vw, 640px);
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Make sure page content stacks above the watermark */
+.nav,
+main,
+.footer {
+  position: relative;
+  z-index: 1;
+}

@@ -1108,7 +1108,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: top;
+  object-position: center;
   display: block;
   transition: transform 0.5s ease;
 }
@@ -1206,4 +1206,377 @@
   .events-grid { grid-template-columns: 1fr; }
 
   .event-img-wrap { aspect-ratio: 4/3; }
+}
+
+/* ── KATA: single-video full-width layout ── */
+.kata-inner.kata-single {
+  grid-template-columns: 1fr;
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── ENROL FORM — contact & submit ── */
+.enrol-form-wrap { display: flex; flex-direction: column; }
+
+.enrol-form-hint {
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--mgrey);
+  margin-bottom: 1.2rem;
+  line-height: 1.6;
+}
+
+.enrol-direct { margin-top: 2rem; }
+
+.enrol-direct-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.35em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 0.9rem;
+}
+
+.enrol-contact-btn {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 0.7rem;
+  border: 1px solid rgba(201,168,76,0.15);
+  background: rgba(255,255,255,0.02);
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.enrol-contact-btn:hover      { transform: translateX(4px); }
+.enrol-email:hover            { border-color: rgba(192,21,42,0.5); background: rgba(192,21,42,0.08); }
+.enrol-whatsapp:hover         { border-color: rgba(39,174,96,0.5); background: rgba(39,174,96,0.08); }
+
+.enrol-contact-icon  { font-size: 1.4rem; flex-shrink: 0; }
+
+.enrol-contact-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.25em;
+  color: var(--mgrey);
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.enrol-contact-value {
+  font-size: 0.95rem;
+  color: var(--white);
+  font-family: 'Crimson Pro', serif;
+}
+
+/* Two-button submit row */
+.form-submit-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.btn-submit-email,
+.btn-submit-whatsapp {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.9rem 1rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 100%;
+}
+
+.btn-submit-email {
+  background: var(--crimson);
+  color: var(--white);
+  clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+}
+
+.btn-submit-email:hover {
+  background: #e0192f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(192,21,42,0.4);
+}
+
+.btn-submit-whatsapp {
+  background: #25d366;
+  color: #fff;
+  clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+}
+
+.btn-submit-whatsapp:hover {
+  background: #1ebe5d;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37,211,102,0.35);
+}
+
+@media (max-width: 480px) {
+  .form-submit-row { grid-template-columns: 1fr; }
+}
+
+/* ══════════════════════════════════════════════════
+   STAR PUPILS — was missing entirely; photo centered
+   ══════════════════════════════════════════════════ */
+.pupils-section {
+  padding: 6rem 4rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.pupils-inner {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+}
+
+.pupils-photo-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+}
+
+.pupils-photo {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  border: 1px solid rgba(201,168,76,0.2);
+  margin: 0 auto;
+}
+
+.pupils-name-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.pupil-label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid rgba(201,168,76,0.15);
+  background: rgba(255,255,255,0.02);
+}
+
+.pupil-label-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(192,21,42,0.18);
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pupil-label-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+/* ══════════════════════════════════════════════════
+   GALLERY — merged from gallery.css, images centered
+   ══════════════════════════════════════════════════ */
+.gallery-section {
+  padding: 5rem 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.gallery-empty {
+  text-align: center;
+  color: var(--mgrey);
+  font-style: italic;
+  padding: 2rem 0;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 2.5rem;
+  justify-items: center;
+}
+
+.gallery-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: none;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0;
+  background: #111;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.25s ease;
+}
+
+.gallery-thumb.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  margin: 0 auto;
+  transition: transform 0.4s ease;
+}
+
+.gallery-thumb:hover img {
+  transform: scale(1.08);
+}
+
+.gallery-thumb:hover,
+.gallery-thumb:focus-visible {
+  box-shadow: 0 0 0 3px var(--gold);
+  outline: none;
+}
+
+.gallery-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.94);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: gallery-fade-in 0.2s ease;
+}
+
+@keyframes gallery-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.gallery-lightbox-img {
+  max-width: min(90vw, 1100px);
+  max-height: 85vh;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  border-radius: 6px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.gallery-lightbox-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 1.75rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0.5rem;
+}
+
+.gallery-lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: var(--white);
+  font-size: 2.5rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  cursor: pointer;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.gallery-lightbox-nav:hover {
+  background: rgba(201, 168, 76, 0.35);
+}
+
+.gallery-lightbox-prev { left: 1.5rem; }
+.gallery-lightbox-next { right: 1.5rem; }
+
+.gallery-lightbox-counter {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--white);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  opacity: 0.75;
+}
+
+@media (max-width: 640px) {
+  .gallery-lightbox-nav {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 1.75rem;
+  }
+  .gallery-lightbox-prev { left: 0.5rem; }
+  .gallery-lightbox-next { right: 0.5rem; }
+}
+
+/* ══════════════════════════════════════════════════
+   GLOBAL IMAGE CENTERING SAFETY NET
+   Catches any image not already governed by a more
+   specific rule above (e.g. stray images without a
+   sizing class) and centers it by default.
+   ══════════════════════════════════════════════════ */
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ══════════════════════════════════════════════════
+   SITE WATERMARK
+   Fixed, low-opacity emblem sitting behind all page
+   content. All your sections already use
+   `position: relative; z-index: 1;` (or higher, like
+   .nav at z-index:100), so they'll correctly stack
+   above this. It shows through in gaps between opaque
+   elements (e.g. between discipline cards, in the
+   .tournaments-section and .sensei-section which use
+   semi-transparent backgrounds, and any section with
+   no background set at all).
+   ══════════════════════════════════════════════════ */
+.site-watermark {
+  position: fixed;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-attachment: fixed;
+  background-size: min(55vw, 640px);
+  opacity: 0.06;
+  pointer-events: none;
+  z-index: 0;
 }

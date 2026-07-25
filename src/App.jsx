@@ -2,17 +2,27 @@ import { useState, useEffect, useRef } from 'react'
 import './App.css'
 
 // ── Asset imports ──────────────────────────────────────────────────────────
-// NOTE: Vite imports local assets by their exact filename.
-// Check your actual filenames in src/assets/ and update these if needed.
+import heroBg      from './assets/hero.png'
+import senseiPhoto from './assets/profile/WhatsApp Image 2026-07-23 at 07.16.41.jpeg'
+import starPupils  from './assets/Star_Pupils/WhatsApp Image 2026-07-23 at 09.28.52.jpeg'
+import event1      from './assets/Events/event1.jpg'
+import event2      from './assets/Events/event2.jpeg'
+import kata3       from './assets/Kata_tutorials/kata3.mp4'
+import watermarkLogo from './assets/international-shotokan-karate-federation-international-shotokan-karate-federation-martial-arts-kata-karate-c62d54cdb300898f4da4345ce3a00af0.png'
 
-import heroBg from './assets/hero.png'
-
-// Events
-import event1 from './assets/Events/event1.jpg'
-import event2 from './assets/Events/event2.jpeg'
-
-// Kata tutorials
-import kata3 from './assets/Kata_tutorials/kata3.mp4'
+// Pull in every image inside src/assets/Gallery automatically — no need to
+// import each file by name, and no need to touch this code when photos are
+// added or removed from that folder.
+const galleryModules = import.meta.glob(
+  './assets/Gallery/*.{png,jpg,jpeg,webp,PNG,JPG,JPEG,WEBP}',
+  { eager: true, import: 'default' }
+)
+const galleryImages = Object.entries(galleryModules)
+  .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
+  .map(([path, src], i) => ({
+    src,
+    alt: `JKS Shotokan Karate College gallery photo ${i + 1}`,
+  }))
 
 // ── Scroll-reveal hook ─────────────────────────────────────────────────────
 function useReveal() {
@@ -43,12 +53,14 @@ function Nav() {
 
   const links = [
     { href: '#disciplines', label: 'Disciplines' },
-    { href: '#sensei',      label: 'Sensei' },
-    { href: '#programs',    label: 'Programs' },
-    { href: '#kata',        label: 'Kata' },
-    { href: '#tournaments', label: 'Tournaments' },
-    { href: '#events',      label: 'Events' },
-    { href: '#enrol',       label: 'Enrol' },
+    { href: '#sensei',      label: 'Sensei'       },
+    { href: '#pupils',      label: 'Pupils'       },
+    { href: '#programs',    label: 'Programs'     },
+    { href: '#kata',        label: 'Kata'         },
+    { href: '#tournaments', label: 'Tournaments'  },
+    { href: '#events',      label: 'Events'       },
+    { href: '#gallery',     label: 'Gallery'      },
+    { href: '#enrol',       label: 'Enrol'        },
   ]
 
   return (
@@ -83,15 +95,10 @@ function Hero() {
     <section
       id="hero"
       className="hero"
-      style={{
-        backgroundImage: `url(${heroBg})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
+      style={{ backgroundImage:`url(${heroBg})`, backgroundSize:'cover', backgroundPosition:'center' }}
     >
       <div className="hero-overlay" />
       <div className="hero-rising-sun" />
-
       <p className="hero-badge">Japan Karate Association Zimbabwe · Est. Kwekwe</p>
       <h1 className="hero-title">Open<br /><span>Hand</span></h1>
       <p className="hero-subtitle">JKS Shotokan Karate College · Kwekwe</p>
@@ -107,9 +114,9 @@ function Hero() {
 // ── STATS ──────────────────────────────────────────────────────────────────
 function Stats() {
   const stats = [
-    { number: '5th', label: 'Dan Black Belt' },
-    { number: '3+',  label: 'Age 3 Welcome' },
-    { number: '5',   label: 'Disciplines' },
+    { number: '5th', label: 'Dan Black Belt'     },
+    { number: '3+',  label: 'Age 3 Welcome'      },
+    { number: '5',   label: 'Disciplines'         },
     { number: 'ZIM', label: 'National Team Coach' },
   ]
   return (
@@ -136,7 +143,7 @@ const disciplines = [
 function DisciplineCard({ icon, name, desc, delay }) {
   const ref = useReveal()
   return (
-    <div className="discipline-card" ref={ref} style={{ transitionDelay: `${delay}ms` }}>
+    <div className="discipline-card" ref={ref} style={{ transitionDelay:`${delay}ms` }}>
       <span className="disc-icon">{icon}</span>
       <div className="disc-name">{name}</div>
       <p className="disc-desc">{desc}</p>
@@ -165,52 +172,144 @@ function Sensei() {
   return (
     <section id="sensei" className="sensei-section">
       <div className="sensei-inner">
+
+        {/* Portrait + quick profile */}
         <div className="sensei-portrait-wrap">
-          <div className="sensei-portrait">
-            <div className="dan-rank">五段</div>
-            <div className="portrait-inner">
-              <div className="portrait-role">Chief Instructor</div>
-              <div className="portrait-icon">🥷</div>
-              <div className="portrait-name">Shepherd Ziwira</div>
-              <div className="portrait-rank">5th Dan Black Belt</div>
-            </div>
-            <div className="belt-display">
-              <div className="belt belt-black" />
-              <div className="belt belt-black" />
-              <div className="belt belt-red" />
-              <div className="belt belt-black" />
-              <div className="belt belt-gold" />
-              <div className="belt belt-black" />
-            </div>
+          <div className="sensei-portrait" style={{ padding:0, overflow:'hidden' }}>
+            <img
+              src={senseiPhoto}
+              alt="Sensei Shepherd Ziwira and his wife"
+              style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'center', display:'block' }}
+            />
           </div>
-          <div className="portrait-caption">Sensei Ziwira · JKS Zimbabwe</div>
+          <div className="portrait-caption">Sensei Ziwira &amp; Family · JKS Zimbabwe</div>
+
+          <div className="sensei-profile-card">
+            <div className="profile-card-title">Quick Profile</div>
+            {[
+              { label: 'Full Name', value: 'Shepherd Ziwira'                  },
+              { label: 'Age',       value: '53 years old'                     },
+              { label: 'Rank',      value: '5th Dan Black Belt — JKS Shotokan'},
+              { label: 'Based',     value: 'Kwekwe, Midlands Province'        },
+              { label: 'Origin',    value: 'Glen Norah, Harare'               },
+            ].map(({ label, value }) => (
+              <div className="profile-card-row" key={label}>
+                <span className="profile-card-label">{label}</span>
+                <span className="profile-card-value">{value}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div>
+        {/* Bio */}
+        <div className="sensei-content">
           <div className="sensei-label">Chief Instructor &amp; Founder</div>
           <h2 className="sensei-name">Shepherd<br />Ziwira</h2>
           <div className="sensei-rank">5th Dan Black Belt · National Team Coach</div>
+
           <p className="sensei-bio">
-            Born and raised in Harare's Glen Norah suburb, Sensei Ziwira began his karate
-            journey at 16 — motivated not by competition, but by a desire to protect the
-            vulnerable from bullies. Today, he is one of Zimbabwe's most celebrated martial artists.
+            One of Zimbabwe's most respected karate instructors and community leaders,
+            Sensei Ziwira began his journey in <strong style={{ color:'#c9a84c' }}>1988</strong> as
+            a quiet high school student in Glen Norah, Harare — taking up martial arts not for
+            glory, but to defend women and children from bullies.
           </p>
           <p className="sensei-bio">
-            Renowned for using karate as a tool to fight drug and alcohol abuse among the youth
-            of Midlands Province, Ziwira has built not just a club — but a movement. His family
-            dynasty is testament to his values: his wife and three children all hold black belt ranks.
+            He trained first in <em>Kyokushin Kai</em> under Sensei Jimmy Mageza, then moved
+            through <em>Shukokai</em> in the 1990s, before committing fully to <em>Shotokan</em> after
+            relocating to Kwekwe — where he trained under legends Amos Chihlava, Gibson Sangweni,
+            and Bearn Mavhiya.
           </p>
+
+          <div className="sensei-pillars">
+            {[
+              {
+                icon: '🥋',
+                heading: 'Coaching & Administration',
+                text: 'Runs karate clubs across the Midlands and serves as JKS Shotokan Technical Director for the region, developing the next generation of fighters.',
+              },
+              {
+                icon: '🤝',
+                heading: 'Community Work',
+                text: 'Uses karate as a tool to fight drug and alcohol abuse among youth — keeping kids off the streets through discipline and sport.',
+              },
+              {
+                icon: '🏆',
+                heading: 'Tournaments',
+                text: 'Organises events including the JKS Invitational National Karate Championships in Kwekwe.',
+              },
+              {
+                icon: '👨‍👩‍👦',
+                heading: 'Family Legacy',
+                text: 'Sons Tinashe, Tanyaradzwa, and Tamuka Ziwira are all karatekas — holding 2nd and 3rd dan black belts and regional national gold medals.',
+              },
+            ].map(p => (
+              <div className="sensei-pillar" key={p.heading}>
+                <div className="sensei-pillar-icon">{p.icon}</div>
+                <div>
+                  <div className="sensei-pillar-heading">{p.heading}</div>
+                  <div className="sensei-pillar-text">{p.text}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
           <div className="credentials">
             {[
               'Chief Instructor, Japan Karate Association of Zimbabwe',
-              'Technical Director, Midlands Karate Union',
-              'Zimbabwe National Karate Team Coach',
-              'Organiser, Annual Kwekwe Invitational Karate Championship',
-              'Organiser, Midlands Karate Championships',
+              'JKS Shotokan Technical Director — Midlands Karate Union',
+              'Zimbabwe National Karate Team Coach & Senior Referee',
+              'Chief Referee, Midlands Karate Union',
+              'Organiser, JKS Invitational National Karate Championships',
             ].map(c => (
               <div className="credential-item" key={c}>
                 <div className="credential-dot" />
                 <span>{c}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="sensei-quote">
+            <span className="sensei-quote-mark">"</span>
+            Karate built my life — it took me from the tough streets of Glen Norah
+            to becoming a national coach and mentor.
+            <span className="sensei-quote-mark">"</span>
+            <div className="sensei-quote-attr">— Sensei Shepherd Ziwira</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
+// ── STAR PUPILS ────────────────────────────────────────────────────────────
+const pupilNames = ['Lovemore', 'Ardon', 'Lance', 'Tanyaradzwa', 'Lucky', 'TBA']
+
+function StarPupils() {
+  return (
+    <section id="pupils" className="pupils-section">
+      <div className="section-header">
+        <div className="section-label">Pride of the Dojo</div>
+        <h2 className="section-title">Star <span>Pupils</span></h2>
+        <p className="section-intro">
+          The next generation of JKS champions — trained under Sensei Ziwira
+          and representing the college with honour and discipline.
+        </p>
+      </div>
+
+      <div className="pupils-inner">
+        <div className="pupils-photo-wrap">
+          <img src={starPupils} alt="JKS Star Pupils" className="pupils-photo" />
+          <div className="pupils-name-strip">
+            {pupilNames.map((name, i) => (
+              <div className="pupil-label" key={i}>
+                <div className="pupil-label-num">{i + 1}</div>
+                <div className="pupil-label-name">
+                  {name === 'TBA'
+                    ? <em style={{ color:'var(--mgrey)', fontSize:'0.8rem' }}>Name pending</em>
+                    : name
+                  }
+                </div>
               </div>
             ))}
           </div>
@@ -223,11 +322,11 @@ function Sensei() {
 // ── PROGRAMS ───────────────────────────────────────────────────────────────
 const programs = [
   { name: 'Little Tigers',        age: '3 – 6 yrs',   level: 'Beginner',                focus: 'Balance, coordination, fun movement, discipline foundations' },
-  { name: 'Junior Karate',        age: '7 – 12 yrs',  level: 'Beginner – Intermediate', focus: 'Kata, kihon, character development, anti-bullying' },
-  { name: 'Youth Champions',      age: '13 – 17 yrs', level: 'All levels',              focus: 'Sport karate, self-discipline, drug & alcohol resistance' },
-  { name: 'Adults – Traditional', age: '18 – 55 yrs', level: 'All levels',              focus: 'Traditional Shotokan, self-defence, fitness, competition' },
-  { name: 'Kaerobics',            age: '16 – 65 yrs', level: 'No experience needed',    focus: 'Cardio fitness, fun, karate-inspired aerobics' },
-  { name: 'Silver Warriors',      age: '55 – 80 yrs', level: 'Gentle pace',             focus: 'Flexibility, balance, mental sharpness, social wellness' },
+  { name: 'Junior Karate',        age: '7 – 12 yrs',  level: 'Beginner – Intermediate', focus: 'Kata, kihon, character development, anti-bullying'           },
+  { name: 'Youth Champions',      age: '13 – 17 yrs', level: 'All levels',              focus: 'Sport karate, self-discipline, drug & alcohol resistance'    },
+  { name: 'Adults – Traditional', age: '18 – 55 yrs', level: 'All levels',              focus: 'Traditional Shotokan, self-defence, fitness, competition'    },
+  { name: 'Kaerobics',            age: '16 – 65 yrs', level: 'No experience needed',    focus: 'Cardio fitness, fun, karate-inspired aerobics'               },
+  { name: 'Silver Warriors',      age: '55 – 80 yrs', level: 'Gentle pace',             focus: 'Flexibility, balance, mental sharpness, social wellness'     },
 ]
 
 function Programs() {
@@ -257,6 +356,7 @@ function Programs() {
 }
 
 // ── KATA TUTORIALS ─────────────────────────────────────────────────────────
+// Only one video currently — rail is hidden when there is only 1 item
 const kataData = [
   { src: kata3, title: 'Kata Demonstration', desc: 'Sensei Ziwira demonstrates fundamental kata form with precision and power.' },
 ]
@@ -264,6 +364,7 @@ const kataData = [
 function KataTutorials() {
   const [active, setActive] = useState(0)
   const ref = useReveal()
+  const hasMultiple = kataData.length > 1
 
   return (
     <section id="kata" className="kata-section">
@@ -276,15 +377,10 @@ function KataTutorials() {
         </p>
       </div>
 
-      <div className="kata-inner" ref={ref}>
-        {/* Main video player */}
+      {/* Single-video: full-width player. Multiple: player + rail side by side */}
+      <div className={`kata-inner${hasMultiple ? '' : ' kata-single'}`} ref={ref}>
         <div className="kata-player-wrap">
-          <video
-            key={kataData[active].src}
-            className="kata-player"
-            controls
-            playsInline
-          >
+          <video key={kataData[active].src} className="kata-player" controls playsInline>
             <source src={kataData[active].src} type="video/mp4" />
             Your browser does not support video playback.
           </video>
@@ -294,22 +390,24 @@ function KataTutorials() {
           </div>
         </div>
 
-        {/* Thumbnail / playlist rail */}
-        <div className="kata-rail">
-          {kataData.map((k, i) => (
-            <button
-              key={i}
-              className={`kata-thumb${active === i ? ' active' : ''}`}
-              onClick={() => setActive(i)}
-            >
-              <div className="kata-thumb-num">{active === i ? '▶' : String(i + 1).padStart(2,'0')}</div>
-              <div className="kata-thumb-text">
-                <div className="kata-thumb-title">{k.title}</div>
-                <div className="kata-thumb-desc">{k.desc}</div>
-              </div>
-            </button>
-          ))}
-        </div>
+        {/* Only render the rail when there are multiple videos */}
+        {hasMultiple && (
+          <div className="kata-rail">
+            {kataData.map((k, i) => (
+              <button
+                key={i}
+                className={`kata-thumb${active === i ? ' active' : ''}`}
+                onClick={() => setActive(i)}
+              >
+                <div className="kata-thumb-num">{active === i ? '▶' : String(i + 1).padStart(2, '0')}</div>
+                <div className="kata-thumb-text">
+                  <div className="kata-thumb-title">{k.title}</div>
+                  <div className="kata-thumb-desc">{k.desc}</div>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )
@@ -340,7 +438,7 @@ const tournaments = [
 function TournamentCard({ watermark, type, name, desc, delay }) {
   const ref = useReveal()
   return (
-    <div className="tournament-card" ref={ref} style={{ transitionDelay: `${delay}ms` }}>
+    <div className="tournament-card" ref={ref} style={{ transitionDelay:`${delay}ms` }}>
       <div className="tournament-watermark">{watermark}</div>
       <div className="tournament-type">{type}</div>
       <div className="tournament-name">{name}</div>
@@ -390,7 +488,7 @@ const eventData = [
 function EventCard({ img, title, date, venue, desc, badge, delay }) {
   const ref = useReveal()
   return (
-    <div className="event-card" ref={ref} style={{ transitionDelay: `${delay}ms` }}>
+    <div className="event-card" ref={ref} style={{ transitionDelay:`${delay}ms` }}>
       <div className="event-img-wrap">
         <img src={img} alt={title} className="event-img" />
         <div className="event-badge">{badge}</div>
@@ -420,6 +518,120 @@ function Events() {
           <EventCard key={e.title} {...e} delay={i * 150} />
         ))}
       </div>
+    </section>
+  )
+}
+
+// ── GALLERY ────────────────────────────────────────────────────────────────
+function GalleryThumb({ src, alt, delay, onClick }) {
+  const ref = useReveal()
+  return (
+    <button
+      className="gallery-thumb"
+      ref={ref}
+      style={{ transitionDelay:`${delay}ms` }}
+      onClick={onClick}
+      aria-label={`Open ${alt} in full size`}
+    >
+      <img src={src} alt={alt} loading="lazy" />
+    </button>
+  )
+}
+
+function GalleryLightbox({ images, index, onClose, onPrev, onNext }) {
+  useEffect(() => {
+    const onKeyDown = e => {
+      if (e.key === 'Escape')    onClose()
+      if (e.key === 'ArrowLeft') onPrev()
+      if (e.key === 'ArrowRight') onNext()
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [onClose, onPrev, onNext])
+
+  const current = images[index]
+
+  return (
+    <div className="gallery-lightbox" onClick={onClose}>
+      <button
+        className="gallery-lightbox-close"
+        onClick={onClose}
+        aria-label="Close gallery viewer"
+      >✕</button>
+
+      <button
+        className="gallery-lightbox-nav gallery-lightbox-prev"
+        onClick={e => { e.stopPropagation(); onPrev() }}
+        aria-label="Previous photo"
+      >‹</button>
+
+      <img
+        key={current.src}
+        src={current.src}
+        alt={current.alt}
+        className="gallery-lightbox-img"
+        onClick={e => e.stopPropagation()}
+      />
+
+      <button
+        className="gallery-lightbox-nav gallery-lightbox-next"
+        onClick={e => { e.stopPropagation(); onNext() }}
+        aria-label="Next photo"
+      >›</button>
+
+      <div className="gallery-lightbox-counter">
+        {index + 1} / {images.length}
+      </div>
+    </div>
+  )
+}
+
+function Gallery() {
+  const [activeIndex, setActiveIndex] = useState(null)
+
+  const open  = i => setActiveIndex(i)
+  const close = () => setActiveIndex(null)
+  const prev  = () => setActiveIndex(i => (i - 1 + galleryImages.length) % galleryImages.length)
+  const next  = () => setActiveIndex(i => (i + 1) % galleryImages.length)
+
+  return (
+    <section id="gallery" className="gallery-section">
+      <div className="section-header">
+        <div className="section-label">Moments from the Dojo</div>
+        <h2 className="section-title">Photo <span>Gallery</span></h2>
+        <p className="section-intro">
+          Training sessions, gradings, and tournaments — a look at life at
+          JKS Shotokan Karate College of Open Hand.
+        </p>
+      </div>
+
+      {galleryImages.length === 0 ? (
+        <p className="gallery-empty">
+          Photos coming soon — check back after our next event.
+        </p>
+      ) : (
+        <div className="gallery-grid">
+          {galleryImages.map((img, i) => (
+            <GalleryThumb
+              key={img.src}
+              src={img.src}
+              alt={img.alt}
+              delay={(i % 8) * 60}
+              onClick={() => open(i)}
+            />
+          ))}
+        </div>
+      )}
+
+      {activeIndex !== null && (
+        <GalleryLightbox
+          images={galleryImages}
+          index={activeIndex}
+          onClose={close}
+          onPrev={prev}
+          onNext={next}
+        />
+      )}
     </section>
   )
 }
@@ -458,18 +670,51 @@ const programOptions = [
   'Fitness Training',
 ]
 
+const SENSEI_EMAIL    = 'kwekweshotokan@gmail.com'
+const SENSEI_WHATSAPP = '263772214281'
+
 function Enrol() {
-  const [form, setForm]           = useState({ name:'', age:'', program:'', phone:'', email:'', message:'' })
-  const [submitted, setSubmitted] = useState(false)
+  const [form, setForm] = useState({
+    name: '', age: '', program: '', phone: '', email: '', message: ''
+  })
 
   const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }))
 
-  const handleSubmit = e => {
+  // Sends via the user's default email app
+  const handleEmailSubmit = e => {
     e.preventDefault()
-    console.log('Enquiry submitted:', form)
-    setSubmitted(true)
-    setForm({ name:'', age:'', program:'', phone:'', email:'', message:'' })
-    setTimeout(() => setSubmitted(false), 6000)
+    const subject = encodeURIComponent(`Enrolment Enquiry – ${form.name}`)
+    const body = encodeURIComponent(
+`New enrolment enquiry from the JKS Karate website.
+
+Name:    ${form.name}
+Age:     ${form.age}
+Program: ${form.program}
+Phone:   ${form.phone}
+Email:   ${form.email || '(not provided)'}
+
+Message:
+${form.message || '(none)'}`)
+
+    window.location.href = `mailto:${SENSEI_EMAIL}?subject=${subject}&body=${body}`
+  }
+
+  // Sends via WhatsApp
+  const handleWhatsAppSubmit = e => {
+    e.preventDefault()
+    const text = encodeURIComponent(
+`Hello Sensei Ziwira, I found your website and would like to enquire about joining JKS Karate.
+
+*Name:*    ${form.name}
+*Age:*     ${form.age}
+*Program:* ${form.program}
+*Phone:*   ${form.phone}
+*Email:*   ${form.email || '(not provided)'}
+
+*Message:*
+${form.message || '(none)'}`)
+
+    window.open(`https://wa.me/${SENSEI_WHATSAPP}?text=${text}`, '_blank')
   }
 
   return (
@@ -478,7 +723,10 @@ function Enrol() {
         <div className="section-label">Begin Your Journey</div>
         <h2 className="section-title">Enrol <span>Today</span></h2>
       </div>
+
       <div className="enrol-grid">
+
+        {/* Contact info */}
         <div className="enrol-info">
           <h3>Contact &amp; Location</h3>
           <ul className="info-list">
@@ -489,44 +737,104 @@ function Enrol() {
             <li>🗓️ Classes run throughout the week</li>
             <li>🌍 Affiliated: Japan Karate Association of Zimbabwe</li>
           </ul>
+
+          {/* Direct contact buttons */}
+          <div className="enrol-direct">
+            <div className="enrol-direct-title">Reach Us Directly</div>
+
+            <a
+              href={`mailto:${SENSEI_EMAIL}`}
+              className="enrol-contact-btn enrol-email"
+            >
+              <span className="enrol-contact-icon">✉</span>
+              <div>
+                <div className="enrol-contact-label">Email</div>
+                <div className="enrol-contact-value">{SENSEI_EMAIL}</div>
+              </div>
+            </a>
+
+            <a
+              href={`https://wa.me/${SENSEI_WHATSAPP}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="enrol-contact-btn enrol-whatsapp"
+            >
+              <span className="enrol-contact-icon">💬</span>
+              <div>
+                <div className="enrol-contact-label">WhatsApp</div>
+                <div className="enrol-contact-value">+263 77 221 4281</div>
+              </div>
+            </a>
+          </div>
         </div>
-        <form className="enrol-form" onSubmit={handleSubmit}>
-          {submitted && (
-            <div className="form-success">
-              ✓ Thank you! Your enquiry has been received. Sensei Ziwira will be in touch shortly.
+
+        {/* Form */}
+        <div className="enrol-form-wrap">
+          <p className="enrol-form-hint">
+            Fill in your details, then choose how to send — by email or WhatsApp.
+          </p>
+
+          <form className="enrol-form">
+            <div className="form-group">
+              <label htmlFor="name">Full Name</label>
+              <input id="name" name="name" type="text" placeholder="Your full name"
+                value={form.name} onChange={handleChange} required />
             </div>
-          )}
-          <div className="form-group">
-            <label htmlFor="name">Full Name</label>
-            <input id="name" name="name" type="text" placeholder="Your full name" value={form.name} onChange={handleChange} required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="age">Age</label>
-            <input id="age" name="age" type="number" placeholder="Age (3 – 80)" min="3" max="80" value={form.age} onChange={handleChange} required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="program">Program of Interest</label>
-            <select id="program" name="program" value={form.program} onChange={handleChange} required>
-              <option value="">Select a program…</option>
-              {programOptions.map(p => <option key={p} value={p}>{p}</option>)}
-            </select>
-          </div>
-          <div className="form-group">
-            <label htmlFor="phone">Phone / WhatsApp</label>
-            <input id="phone" name="phone" type="tel" placeholder="+263 …" value={form.phone} onChange={handleChange} required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="email">Email (optional)</label>
-            <input id="email" name="email" type="email" placeholder="your@email.com" value={form.email} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="message">Message (optional)</label>
-            <textarea id="message" name="message" rows="3" placeholder="Any questions or details…" value={form.message} onChange={handleChange} />
-          </div>
-          <button type="submit" className="btn-primary" style={{ marginTop:'0.5rem', border:'none', width:'100%' }}>
-            Send Enquiry ›
-          </button>
-        </form>
+
+            <div className="form-group">
+              <label htmlFor="age">Age</label>
+              <input id="age" name="age" type="number" placeholder="Age (3 – 80)"
+                min="3" max="80" value={form.age} onChange={handleChange} required />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="program">Program of Interest</label>
+              <select id="program" name="program" value={form.program}
+                onChange={handleChange} required>
+                <option value="">Select a program…</option>
+                {programOptions.map(p => <option key={p} value={p}>{p}</option>)}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="phone">Phone / WhatsApp</label>
+              <input id="phone" name="phone" type="tel" placeholder="+263 …"
+                value={form.phone} onChange={handleChange} required />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="email">Email (optional)</label>
+              <input id="email" name="email" type="email" placeholder="your@email.com"
+                value={form.email} onChange={handleChange} />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="message">Message (optional)</label>
+              <textarea id="message" name="message" rows="3"
+                placeholder="Any questions or details…"
+                value={form.message} onChange={handleChange} />
+            </div>
+
+            {/* Two submit buttons — email or WhatsApp */}
+            <div className="form-submit-row">
+              <button
+                type="button"
+                className="btn-submit-email"
+                onClick={handleEmailSubmit}
+              >
+                ✉ Send via Email
+              </button>
+              <button
+                type="button"
+                className="btn-submit-whatsapp"
+                onClick={handleWhatsAppSubmit}
+              >
+                💬 Send via WhatsApp
+              </button>
+            </div>
+
+          </form>
+        </div>
       </div>
     </section>
   )
@@ -540,11 +848,13 @@ function Footer() {
       <div className="footer-text">Traditional Karate · Kwekwe, Zimbabwe · For all ages</div>
       <ul className="footer-links">
         {[
-          ['#disciplines','Disciplines'],
-          ['#sensei','Sensei'],
-          ['#kata','Kata'],
-          ['#events','Events'],
-          ['#enrol','Enrol'],
+          ['#disciplines', 'Disciplines'],
+          ['#sensei',      'Sensei'      ],
+          ['#pupils',      'Pupils'      ],
+          ['#kata',        'Kata'        ],
+          ['#events',      'Events'      ],
+          ['#gallery',     'Gallery'     ],
+          ['#enrol',       'Enrol'       ],
         ].map(([href, label]) => (
           <li key={href}><a href={href}>{label}</a></li>
         ))}
@@ -557,16 +867,23 @@ function Footer() {
 export default function App() {
   return (
     <>
+      <div
+        className="site-watermark"
+        style={{ backgroundImage: `url(${watermarkLogo})` }}
+        aria-hidden="true"
+      />
       <Nav />
       <main>
         <Hero />
         <Stats />
         <Disciplines />
         <Sensei />
+        <StarPupils />
         <Programs />
         <KataTutorials />
         <Tournaments />
         <Events />
+        <Gallery />
         <Mission />
         <Enrol />
       </main>
