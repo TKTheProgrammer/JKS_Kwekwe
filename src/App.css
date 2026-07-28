@@ -1110,7 +1110,13 @@
   object-fit: cover;
   object-position: center;
   display: block;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s ease, opacity 0.4s ease;
+  animation: event-img-fade 0.4s ease;
+}
+
+@keyframes event-img-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .event-card:hover .event-img { transform: scale(1.03); }
@@ -1127,6 +1133,35 @@
   text-transform: uppercase;
   padding: 0.35rem 0.8rem;
   font-weight: 700;
+}
+
+.event-img-dots {
+  position: absolute;
+  bottom: 0.9rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+}
+
+.event-img-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid rgba(245,240,232,0.6);
+  background: rgba(245,240,232,0.25);
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.event-img-dot:hover {
+  transform: scale(1.2);
+}
+
+.event-img-dot.active {
+  background: var(--gold);
+  border-color: var(--gold);
 }
 
 /* Card body */
@@ -1168,6 +1203,16 @@
   font-style: italic;
   line-height: 1.6;
   margin-bottom: 1.4rem;
+}
+
+.event-source {
+  font-family: 'Cinzel', serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: var(--mgrey);
+  opacity: 0.7;
+  text-transform: uppercase;
+  margin: -0.8rem 0 1.2rem;
 }
 
 .event-btn {
@@ -1546,6 +1591,179 @@
 }
 
 /* ══════════════════════════════════════════════════
+   PRESS — newspaper clipping, styled deliberately as
+   an actual aged clipping pinned against the dark site,
+   with a hanko-style ink stamp echoing the dojo's
+   Japanese heritage.
+   ══════════════════════════════════════════════════ */
+.press-section {
+  padding: 6rem 4rem;
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.press-clipping {
+  position: relative;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(0,0,0,0.03) 0%, transparent 40%),
+    radial-gradient(circle at 85% 75%, rgba(0,0,0,0.03) 0%, transparent 40%),
+    #ece4d3;
+  color: #2a2018;
+  padding: 3rem 3.2rem 2.4rem;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 30px 70px rgba(0,0,0,0.5), 0 2px 0 rgba(255,255,255,0.4) inset;
+  transform: rotate(-0.6deg);
+  opacity: 0;
+  translate: 0 30px;
+  transition: opacity 0.8s ease, translate 0.8s ease;
+}
+
+.press-clipping.visible {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.press-stamp {
+  position: absolute;
+  top: -1.6rem;
+  right: 2.4rem;
+  width: 92px;
+  height: 92px;
+  border: 3px solid rgba(192,21,42,0.75);
+  border-radius: 50%;
+  color: rgba(192,21,42,0.75);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-14deg);
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  line-height: 1.3;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.press-stamp span {
+  font-family: serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+
+.press-masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 2px solid #2a2018;
+  padding-bottom: 0.7rem;
+  margin-bottom: 1.4rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #6b5a48;
+}
+
+.press-headline {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+  line-height: 1.2;
+  color: #201812;
+  margin-bottom: 0.6rem;
+}
+
+.press-byline {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: #6b5a48;
+  margin-bottom: 1.8rem;
+  padding-bottom: 1.6rem;
+  border-bottom: 1px solid rgba(0,0,0,0.12);
+}
+
+.press-body {
+  columns: 2;
+  column-gap: 2.4rem;
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.02rem;
+  line-height: 1.75;
+  color: #3a2e22;
+}
+
+.press-body p {
+  margin-bottom: 1.1rem;
+  break-inside: avoid;
+}
+
+.press-dropcap {
+  float: left;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 3.4rem;
+  line-height: 0.75;
+  padding: 0.1rem 0.3rem 0 0;
+  color: var(--crimson);
+}
+
+.press-footer {
+  margin-top: 1.6rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(0,0,0,0.12);
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #8a7a6a;
+}
+
+@media (max-width: 768px) {
+  .press-section { padding: 4rem 1.5rem; }
+  .press-clipping { padding: 2.4rem 1.6rem 1.8rem; transform: rotate(0deg); }
+  .press-body { columns: 1; }
+  .press-stamp { width: 74px; height: 74px; top: -1.2rem; right: 1.2rem; }
+}
+
+/* ══════════════════════════════════════════════════
+   RECURRING DIVIDER MOTIF
+   A quiet gold stroke used between major sections —
+   a nod to a single confident brushstroke rather than
+   a plain hairline rule.
+   ══════════════════════════════════════════════════ */
+.section-divider {
+  width: 140px;
+  height: 3px;
+  margin: 0 auto 3rem;
+  background: linear-gradient(90deg, transparent, var(--gold) 50%, transparent);
+  border-radius: 2px;
+  opacity: 0.6;
+}
+
+/* ══════════════════════════════════════════════════
+   ACCESSIBILITY & MOTION — quality floor
+   ══════════════════════════════════════════════════ */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════
    GLOBAL IMAGE CENTERING SAFETY NET
    Catches any image not already governed by a more
    specific rule above (e.g. stray images without a
@@ -1555,6 +1773,254 @@ img {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+/* ══════════════════════════════════════════════════
+   PRESS CLIPPING — styled like an actual newspaper cutting
+   ══════════════════════════════════════════════════ */
+.press-section {
+  padding: 6rem 4rem;
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.press-clipping {
+  background: #f2ede2;
+  color: #1a1512;
+  padding: 3rem 3.5rem;
+  border: 1px solid rgba(0,0,0,0.15);
+  box-shadow: 0 30px 70px rgba(0,0,0,0.45), 0 0 0 6px rgba(0,0,0,0.02) inset;
+  position: relative;
+  opacity: 0;
+  transform: translateY(30px) rotate(-0.4deg);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.press-clipping.visible {
+  opacity: 1;
+  transform: translateY(0) rotate(-0.4deg);
+}
+
+/* subtle aged-paper texture */
+.press-clipping::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.015) 0px, transparent 1px, transparent 2px),
+    radial-gradient(ellipse at top left, rgba(0,0,0,0.05), transparent 60%),
+    radial-gradient(ellipse at bottom right, rgba(0,0,0,0.05), transparent 60%);
+  pointer-events: none;
+}
+
+.press-masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-top: 3px solid #1a1512;
+  border-bottom: 1px solid #1a1512;
+  padding: 0.6rem 0;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.press-mast-name {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: #1a1512;
+}
+
+.press-mast-meta {
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #5a5048;
+}
+
+.press-headline {
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-weight: 800;
+  font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+  line-height: 1.15;
+  color: #1a1512;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.press-subhead {
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: #5a5048;
+  margin-bottom: 0.9rem;
+  position: relative;
+}
+
+.press-byline {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  border-bottom: 1px solid rgba(0,0,0,0.15);
+  padding-bottom: 1.2rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.press-body {
+  columns: 2;
+  column-gap: 2.5rem;
+  position: relative;
+}
+
+.press-body p {
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #2a2420;
+  margin-bottom: 1.1rem;
+  break-inside: avoid;
+}
+
+.press-body p:first-of-type::first-letter {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 3.4rem;
+  font-weight: 900;
+  float: left;
+  line-height: 0.8;
+  padding: 0.1rem 0.4rem 0 0;
+  color: var(--crimson);
+}
+
+.press-pullquote {
+  font-style: italic;
+  font-size: 1.05rem !important;
+  border-left: 3px solid var(--crimson);
+  padding-left: 1rem;
+  color: #4a3f38 !important;
+}
+
+.press-source-footer {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px dashed rgba(0,0,0,0.2);
+  font-family: 'Cinzel', serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.05em;
+  color: #5a5048;
+  font-style: italic;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .press-section { padding: 4rem 1.5rem; }
+  .press-clipping { padding: 2rem 1.5rem; }
+  .press-body { columns: 1; }
+}
+
+/* ══════════════════════════════════════════════════
+   SCROLL TO TOP
+   ══════════════════════════════════════════════════ */
+.scroll-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 48px;
+  height: 48px;
+  background: var(--crimson);
+  color: var(--white);
+  border: none;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 50;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  transition: background 0.3s, transform 0.3s;
+  animation: fadeUp 0.4s ease both;
+}
+
+.scroll-to-top:hover {
+  background: #e0192f;
+  transform: translateY(-3px);
+}
+
+@media (max-width: 768px) {
+  .scroll-to-top { bottom: 1.2rem; right: 1.2rem; width: 42px; height: 42px; }
+}
+
+/* ══════════════════════════════════════════════════
+   SITE-WIDE DESIGN POLISH
+   ══════════════════════════════════════════════════ */
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: var(--crimson);
+  color: var(--white);
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* Custom scrollbar (WebKit browsers) */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--deep); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--crimson), var(--gold));
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+/* Subtle resting depth on cards, so they don't feel flat before hover */
+.discipline-card,
+.tournament-card,
+.event-card,
+.pupil-label {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+}
+
+.nav.scrolled {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+/* Fine decorative underline beneath every section title */
+.section-title {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.6rem;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+/* Very subtle film-grain texture over the whole page for tactile depth */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 /* ══════════════════════════════════════════════════

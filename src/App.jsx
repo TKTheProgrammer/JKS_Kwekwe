@@ -7,6 +7,8 @@ import senseiPhoto from './assets/profile/WhatsApp Image 2026-07-23 at 07.16.41.
 import starPupils  from './assets/Star_Pupils/WhatsApp Image 2026-07-23 at 09.28.52.jpeg'
 import event1      from './assets/Events/event1.jpg'
 import event2      from './assets/Events/event2.jpeg'
+import event3      from './assets/Events/event3.jpeg'
+import event4      from './assets/Events/event4.jpeg'
 import kata3       from './assets/Kata_tutorials/kata3.mp4'
 import watermarkLogo from './assets/iskf.png'
 
@@ -283,7 +285,7 @@ function Sensei() {
 }
 
 // ── STAR PUPILS ────────────────────────────────────────────────────────────
-const pupilNames = ['Lovemore', 'Ardon', 'Lance', 'Tanyaradzwa', 'Lucky', 'TBA']
+const pupilNames = ['Lovemore', 'Ardon', 'Lance', 'Tanyaradzwa', 'Lucky', 'Zvikomborero']
 
 function StarPupils() {
   return (
@@ -417,9 +419,9 @@ function KataTutorials() {
 const tournaments = [
   {
     watermark: '★',
-    type: 'Annual · Flagship Event',
-    name: 'Kwekwe Invitational Karate Championship',
-    desc: 'Our premier annual competition drawing karatekas from across Zimbabwe — a showcase of discipline, skill, and sportsmanship.',
+    type: 'Annual · Flagship Event · "Best of the Best"',
+    name: 'Kwekwe National Invitational Karate Championships',
+    desc: 'Now in its 16th edition, our premier annual competition draws karatekas from across Zimbabwe, from young children to veterans — a showcase of discipline, skill, and sportsmanship.',
   },
   {
     watermark: '◆',
@@ -468,15 +470,16 @@ function Tournaments() {
 // ── EVENTS ─────────────────────────────────────────────────────────────────
 const eventData = [
   {
-    img:   event1,
-    title: 'Kwekwe Invitational Karate Championship',
-    date:  'August 1, 2026',
-    venue: 'Kwekwe, Midlands Province',
-    desc:  'The annual flagship tournament returns! Open to all grades and age groups. Come compete, support, and celebrate the spirit of karate.',
-    badge: 'Upcoming',
+    img:   [event1, event3, event4],
+    title: 'Kwekwe National Invitational Karate Championships — 16th Edition',
+    date:  'Saturday, August 1, 2026',
+    venue: 'Queens Sports Club, Kwekwe',
+    desc:  'Dubbed the "Best of the Best," this 16th edition is open to every age group, from young children through to veterans, and features senior, junior boys\', and junior girls\' categories. Reigning under-60kg champion Tanyaradzwa Ziwira defends his title while preparing for the World Karate Championships in Brazil, alongside fellow competitors Fortune Nyabanga, Blessing Sithole, Trinity Kotsi, and Lovemore Mutune.',
+    source: 'As reported by H-Metro (Zimpapers Sports Hub), 27 July 2026',
+    badge: '16th Edition',
   },
   {
-    img:   event2,
+    img:   [event2, event3, event4],
     title: 'JKS Midlands Open Tournament',
     date:  'August 1, 2026',
     venue: 'Kwekwe, Midlands Province',
@@ -485,13 +488,46 @@ const eventData = [
   },
 ]
 
-function EventCard({ img, title, date, venue, desc, badge, delay }) {
+function EventCard({ img, title, date, venue, desc, source, badge, delay }) {
   const ref = useReveal()
+  const images = Array.isArray(img) ? img : [img]
+  const [active, setActive] = useState(0)
+  const [paused, setPaused] = useState(false)
+
+  // Auto-advance the slideshow when there's more than one photo.
+  // Loops forward continuously (last photo wraps back to the first).
+  useEffect(() => {
+    if (images.length <= 1 || paused) return
+    const id = setInterval(() => {
+      setActive(i => (i + 1) % images.length)
+    }, 3500)
+    return () => clearInterval(id)
+  }, [images.length, paused])
+
   return (
-    <div className="event-card" ref={ref} style={{ transitionDelay:`${delay}ms` }}>
+    <div
+      className="event-card"
+      ref={ref}
+      style={{ transitionDelay:`${delay}ms` }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
       <div className="event-img-wrap">
-        <img src={img} alt={title} className="event-img" />
+        <img src={images[active]} alt={title} className="event-img" />
         <div className="event-badge">{badge}</div>
+
+        {images.length > 1 && (
+          <div className="event-img-dots">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                className={`event-img-dot${active === i ? ' active' : ''}`}
+                onClick={() => setActive(i)}
+                aria-label={`Show photo ${i + 1} of ${images.length}`}
+              />
+            ))}
+          </div>
+        )}
       </div>
       <div className="event-body">
         <div className="event-meta">
@@ -500,6 +536,7 @@ function EventCard({ img, title, date, venue, desc, badge, delay }) {
         </div>
         <h3 className="event-title">{title}</h3>
         <p className="event-desc">{desc}</p>
+        {source && <p className="event-source">{source}</p>}
         <a href="#enrol" className="btn-primary event-btn">Register Interest</a>
       </div>
     </div>
